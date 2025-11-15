@@ -28,3 +28,9 @@ curl localhost:8787
 ```json
 {"message":"Hello, Cloudflare Workers!"}
 ```
+
+## R2バケットを作成する
+
+Cloudflareのアカウントを作成し、R2バケットを作成 ここでは _terraform-remote-state_ とした
+
+![create_bucket](./resources/create_bucket.png)
