@@ -1,5 +1,0 @@
-endpoints = {
-    s3 = "https://<account_id>.r2.cloudflarestorage.com"
-}
-access_key = "<r2_key>"
-secret_key = "<r2_secret>"

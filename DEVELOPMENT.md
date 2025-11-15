@@ -158,3 +158,39 @@ terraform init -backend-config r2.tfbackend
 > [!NOTE]
 >
 > このオプションは `plan` および `apply` を実行するときは不要
+
+## CIで管理しやすくする
+
+credentialが`terraform.tfvars` と `r2.tfbackend` に散らばってしまっているため、
+できる限り環境変数に落とし込む
+
+### direnvで環境変数をまとめる
+
+Ref: [direnv – unclutter your .profile | direnv](https://direnv.net/)
+
+`.envrc` でこのあたりの変数をまとめて管理する
+
+```sh
+export TF_VAR_cloudflare_account_id=account_id
+export CLOUDFLARE_API_TOKEN="token"
+export AWS_ACCESS_KEY_ID="key"
+export AWS_SECRET_ACCESS_KEY="secret"
+export AWS_ENDPOINT_URL_S3="https://example.com"
+```
+
+### ローカルで確認
+
+いったん `terraform destroy` し、ローカルの設定情報(`.terraform` 等)を削除 これで実質CI環境と条件を揃えられるハズ
+
+綺麗にしたら `terraform init` する 今回は `.tfbackend` はいないので、オプションは必要ない
+
+```sh
+terraform init
+```
+
+特段問題なく環境構築できることを確認する
+
+```sh
+terraform plan
+terraform apply
+```
