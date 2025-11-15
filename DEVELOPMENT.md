@@ -231,3 +231,17 @@ CLOUDFLARE_API_TOKEN   about 1 minute ago
 R2_ACCESS_KEY_ID       less than a minute ago
 R2_SECRET_ACCESS_KEY   less than a minute ago
 ```
+
+### カスタムドメインの設定 -> 断念
+
+[`cloudflare_workers_custom_domain`](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/workers_custom_domain) を使うと、ワーカに対するカスタムドメインの設定も自動化できる
+
+しかし、どうやらこれを使うには `cloudflare_worker_version` を使ってバージョンを作成しておく必要があるよう
+
+Terraformでビルドステップを考え始めると順番がこんがらがって大変なことになるので、ここでは対応せず、`wrangler.toml` で設定する方向で対処する
+
+```ini
+[[routes]]
+pattern = "terraform-remote-state.enchan.me"
+custom_domain = true
+```
