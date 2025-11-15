@@ -1,0 +1,13 @@
+{
+    "name": "terraform_remote_state_management",
+    "type": "module",
+    "scripts": {
+        "dev": "wrangler dev",
+        "build": "wrangler build",
+        "predeploy": "wrangler build",
+        "deploy": "wrangler deploy"
+    },
+    "devDependencies": {
+        "wrangler": "^4.47.0"
+    }
+}
