@@ -108,3 +108,53 @@ R2 object storage -> Account Details -> API Tokens -> Manage に移動し、
 今回作成したバケットにのみ読み書きを許可するトークンを生成する
 
 ![create_r2_api_token](./resources/create_r2_api_token.png)
+
+### バックエンド構成を作成する
+
+Ref: [Remote R2 backend · Cloudflare Terraform docs](https://developers.cloudflare.com/terraform/advanced-topics/remote-backend/)
+
+R2をstate管理に使うには、Terraformの `backend` に `s3` を設定してやればよい イメージこんな感じ:
+
+```hcl
+terraform {
+  backend "s3" {
+    endpoints = {
+      s3 = "<endpoint URL>"
+    }
+
+    access_key = "<key>"
+    secret_key = "<secret>"
+
+    bucket = "terraform-remote-state"
+    key    = "/path/to/terraform.tfstate"
+    region = "auto"
+
+    // 省略
+  }
+
+  // 省略
+}
+```
+
+しかしこれをそのまま使うと、APIトークンを `main.tf` に直書きすることになってしまう
+そこで git-ignoredな `r2.tfbackend` ファイルを別途作成し、トークンはこちらに記載する
+
+(`.tfbackend` は別にTerraformが直接サポートしている拡張子というわけではない)
+
+```hcl
+endpoints = {
+    s3 = "https://<account_id>.r2.cloudflarestorage.com"
+}
+access_key = "<r2_key>"
+secret_key = "<r2_secret>"
+```
+
+`terraform init` する際に、このファイルをオプションとして与える
+
+```sh
+terraform init -backend-config r2.tfbackend
+```
+
+> [!NOTE]
+>
+> このオプションは `plan` および `apply` を実行するときは不要
