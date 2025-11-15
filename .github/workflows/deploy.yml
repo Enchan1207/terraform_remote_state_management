@@ -24,15 +24,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: "pnpm"
-
       - name: Init terraform environment
         run: terraform init
 
@@ -62,6 +53,9 @@ jobs:
 
       - name: Init terraform environment
         run: terraform init
+
+      - name: Install dependencies
+        run: pnpm install
 
       # ここでterraformのoutputを拾ってきてenvを出力してもよいかも
       # 現時点ではoutputはないので関係ない
