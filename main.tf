@@ -25,27 +25,15 @@ variable "cloudflare_account_id" {
   type = string
 }
 
-variable "worker_name" {
-  type    = string
-  default = "terraform_remote_state_management"
-}
-
-variable "worker_domain" {
-  type    = string
-  default = "terraform_remote_state_management.enchan.me"
-}
-
 variable "cloudflare_zone_id" {
   type = string
 }
 
-provider "cloudflare" {
-  // APIトークンには環境変数 CLOUDFLARE_API_TOKEN の値を使用
-}
+provider "cloudflare" {}
 
 resource "cloudflare_worker" "worker" {
   account_id = var.cloudflare_account_id
-  name       = var.worker_name
+  name       = "terraform_remote_state_management"
   observability = {
     enabled = true
   }
@@ -53,13 +41,4 @@ resource "cloudflare_worker" "worker" {
     enabled          = false
     previews_enabled = false
   }
-}
-
-resource "cloudflare_workers_custom_domain" "custom_domain" {
-  account_id  = var.cloudflare_account_id
-  environment = "production"
-  hostname    = var.worker_domain
-  service     = var.worker_name
-  zone_id     = var.cloudflare_zone_id
-  depends_on  = [cloudflare_worker.worker]
 }

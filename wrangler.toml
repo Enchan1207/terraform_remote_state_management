@@ -2,3 +2,7 @@ name = "terraform_remote_state_management"
 compatibility_date = "2025-11-05"
 compatibility_flags = [ "nodejs_compat" ]
 main = "./src/index.js"
+
+[[routes]]
+pattern = "terraform-remote-state.enchan.me"
+custom_domain = true
