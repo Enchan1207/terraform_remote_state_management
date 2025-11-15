@@ -90,3 +90,21 @@ terraform apply
 空のWorkersプロジェクトが作成された
 
 ![created_empty_worker](./resources/created_empty_worker.png)
+
+混乱を防ぐため、いったんこのリソースは削除しておく
+
+```sh
+terraform destroy
+```
+
+## StateをR2で管理する
+
+ここまでの手順を実行すると、ファイル `terraform.tfstate` が生成されている
+ここにすべてが記載されているため、このファイルをR2で管理してあげればCI環境でも状態を共有できる
+
+### APIキーを作成する
+
+R2 object storage -> Account Details -> API Tokens -> Manage に移動し、
+今回作成したバケットにのみ読み書きを許可するトークンを生成する
+
+![create_r2_api_token](./resources/create_r2_api_token.png)
