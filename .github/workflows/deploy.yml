@@ -61,4 +61,4 @@ jobs:
       # 現時点ではoutputはないので関係ない
 
       - name: Deploy workers
-        run: pnpm deploy
+        run: pnpm run deploy
