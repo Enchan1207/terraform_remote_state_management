@@ -194,3 +194,40 @@ terraform init
 terraform plan
 terraform apply
 ```
+
+### GitHub Actions workflow を構築する
+
+`main` にpushした際に起動し、ビルド・デプロイするワークフローを作ってみる
+
+こんな感じで `env` を構成して……
+
+```yml
+name: deploy
+on:
+  push:
+    branches:
+      - main
+
+env:
+  TF_VAR_cloudflare_account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+  AWS_ENDPOINT_URL_S3: https://${{ secrets.CLOUDFLARE_ACCOUNT_ID }}.r2.cloudflarestorage.com
+```
+
+`gh` でシークレットを埋め込んでおく
+
+```sh
+echo "xxxxxx" | gh secret set CLOUDFLARE_ACCOUNT_ID
+```
+
+`gh secret list` を実行して、値が設定されていることを確認
+
+```
+NAME                   UPDATED               
+CLOUDFLARE_ACCOUNT_ID  about 1 minute ago
+CLOUDFLARE_API_TOKEN   about 1 minute ago
+R2_ACCESS_KEY_ID       less than a minute ago
+R2_SECRET_ACCESS_KEY   less than a minute ago
+```
